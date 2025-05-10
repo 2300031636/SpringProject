@@ -1,56 +1,68 @@
-//package com.project.controllers;
-//
-//import java.util.List;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//
-//import com.project.models.Admin;
-//import com.project.models.User;
-//import com.project.services.AdminService;
-//
-//@RestController
-//@RequestMapping("/admin")
-//@CrossOrigin("*")
-//public class AdminController {
-//
-//    @Autowired
-//    private AdminService service;
-//
-//    @PostMapping("/login")
-//    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
-//        boolean isAuthenticated = service.login(email, password);
-//
-//        if (isAuthenticated) {
-//            return ResponseEntity.status(HttpStatus.OK)
-//                    .body("<h1>Welcome Admin!</h1>");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-//                    .body("<p>Wrong email or password!</p>");
-//        }
-//    }
-//
-//   
-//
-//    @GetMapping("/display")
-//    public ResponseEntity<List<User>> displayUsers() {
-//        try {
-//            List<User> users = service.viewuser();
-//            return ResponseEntity.ok(users);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(500).build();
-//        }
-//    }
-//
-//    @DeleteMapping("/delete")
-//    public ResponseEntity<String> removeUser(@RequestParam int userid) {
-//        try {
-//            String result = service.deleteuser(userid);
-//            return ResponseEntity.ok(result);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(500).body("Error deleting user: " + e.getMessage());
-//        }
-//    }
-//}
+package com.project.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.project.models.Admin;
+import com.project.models.User;
+import com.project.models.ProjectManager; 
+import com.project.services.AdminService;
+
+@RestController
+@RequestMapping("/admin")
+@CrossOrigin("*")
+public class AdminController {
+
+    @Autowired
+    private AdminService service;
+
+    @GetMapping
+    public String home() {
+        return "Admin Home";
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> adminLogin(@RequestBody Admin admin) {
+        try {
+            Admin a = service.adminLogin(admin.getEmail(), admin.getPassword());
+            if (a != null) {
+                System.out.println("Admin logged in: " + admin.getEmail());
+                return ResponseEntity.ok(a);
+            } else {
+                return ResponseEntity.status(401).body("Invalid Credentials");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Login Failed: " + e.getMessage());
+        }
+    }
+    @PostMapping("/addmanager")
+    public ResponseEntity<String> addeventmanager(@RequestBody ProjectManager man)
+    {
+  	   try
+  	   {
+  		   
+  		  String obj = service.addManager(man);
+  		  return ResponseEntity.ok(obj); 
+  	   }
+  	   catch(Exception e)
+  	   {
+  		   
+  		   return ResponseEntity.status(500).body("Failed to Add Manager ... "); 
+  	   }
+    }
+
+    @GetMapping("/displayusers")
+    public ResponseEntity<List<User>> viewUsers() {
+        List<User> users = service.viewusers();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/displaymanagers") 
+    public ResponseEntity<List<ProjectManager>> viewManagers() {
+        List<ProjectManager> managers = service.viewManagers(); 
+        return ResponseEntity.ok(managers);
+    }
+}

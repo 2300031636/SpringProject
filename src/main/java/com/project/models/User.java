@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 public class User {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable=false)
 	private int id;
 	@Column(name="user_email",unique= true,nullable=false)
@@ -20,8 +21,7 @@ public class User {
 	private String username;
 	@Column(name="user_pwd",nullable=false)
 	private String password;
-	@Column(name="user_role",nullable=false)
-	private String role;
+	
 	@Column(name="user_contact",nullable=false)
 	private String contact;
 	@Column(name="user_add",nullable=false)
@@ -52,12 +52,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getRole() {
-		return role;
-	}
-	public void setRole(String role) {
-		this.role = role;
-	}
+	
 	public String getContact() {
 		return contact;
 	}
@@ -76,9 +71,8 @@ public class User {
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", username=" + username + ", password=" + password + ", role="
-				+ role + ", phoneno=" + contact + ", address=" + address + ", designation=" + designation + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "User [id=" + id + ", email=" + email + ", username=" + username + ", password=" + password + ", phoneno=" + contact + ", address=" + address + ", designation=" + designation + "]";
+//	}
 }

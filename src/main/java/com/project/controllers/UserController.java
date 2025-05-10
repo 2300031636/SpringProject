@@ -26,6 +26,7 @@ public class UserController {
             String output = service.registeruser(user);
             return ResponseEntity.ok(output);
         } catch (Exception e) {
+        	 e.printStackTrace();
             return ResponseEntity.status(500).body("User Registration Failed ...");
         }
     }
