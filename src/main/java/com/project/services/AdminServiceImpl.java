@@ -29,15 +29,15 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private UserRepository userRepo;
 
-//    @Autowired
-//    private TaskRepository taskRepository;
 
-	@Override
-	public Admin adminLogin(String email, String password) {
-	 
-    	 return adminRepo.findByEmailAndPassword(email, password);
+    @Override
+    public Admin adminLogin(String email, String password) {
+        if (email == null || password == null) {
+            throw new IllegalArgumentException("Email and password must not be null");
+        }
 
-	}
+        return adminRepo.login(email.trim(), password.trim());
+    }
 
 	@Override
 	public String addManager(ProjectManager manager) {
@@ -52,10 +52,21 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public String deleteManager(int managerId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String deleteManager(int Id) {
+		
+		 Optional<ProjectManager> manager = managerRepo.findById(Id);
+		    
+		    if (manager.isPresent()) 
+		    {	
+		        managerRepo.deleteById(Id);
+		        return "Manager Deleted Successfully";
+		    } 
+		    else 
+		    {
+		        return "Manager ID Not Found";
+		    }}
+	
+	
 
 	@Override
 	public List<User> viewusers() {
@@ -63,10 +74,19 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public String deleteUser(int userId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String deleteUser(int Id) {
+		
+		 Optional<User> user = userRepo.findById(Id);
+		    
+		    if (user.isPresent()) 
+		    {	
+		        userRepo.deleteById(Id);
+		        return "User Deleted Successfully";
+		    } 
+		    else 
+		    {
+		        return "User ID Not Found";
+		    }
+	}}
 
    
-}

@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 import com.project.models.AssignTask;
 import com.project.models.ProjectManager;
 import com.project.models.Task;
-import com.project.repositories.AssignTaskRepository;
+//import com.project.repositories.AssignTaskRepository;
+//import com.project.repositories.AssignTaskRepository;
 import com.project.repositories.ManagerRepository;
 import com.project.repositories.TaskRepository;
 
@@ -23,8 +24,8 @@ public class ManagerServiceImpl implements ManagerService {
     @Autowired
     private TaskRepository taskRepo;
 
-    @Autowired
-    private AssignTaskRepository assignTaskRepo;
+//    @Autowired
+//    private AssignTaskRepository assignTaskRepo;
 
     
     @Override
@@ -39,31 +40,19 @@ public class ManagerServiceImpl implements ManagerService {
         return "Task added Successfully";
     }
 
-    
-    @Override
-    public List<Task> viewtasksbymanager(int mid) {
-        ProjectManager manager = managerRepo.findById(mid).orElse(null);
-        if (manager != null) {
-            return taskRepo.findByManager(manager);
-        }
-        return null;
-    }
 
-    
-    @Override
-    public List<AssignTask> assigntasksbyManager(int mid) {
-        ProjectManager manager = managerRepo.findById(mid).orElse(null);
-        if (manager != null) {
-            return assignTaskRepo.findByManager(manager);
-        }
-        return null;
-    }
+	@Override
+	public ProjectManager ManagerById(int mid) {
+		return managerRepo.findById(mid).get();
+	}
 
-    
-    @Override
-    @Transactional
-    public String updatetaskstatus(int id, String status) {
-        int updated = assignTaskRepo.updateStatusById(status, id);
-        return updated > 0 ? "Task Status Updated Successfully" : "Task not found or update failed";
-    }
+
+	@Override
+	public List<Task> viewtasksbymanager(int mid) {
+		ProjectManager manager = managerRepo.findById(mid).orElse(null);
+		 return taskRepo.findByManager(manager);
+		
+		
+	}
+
 }

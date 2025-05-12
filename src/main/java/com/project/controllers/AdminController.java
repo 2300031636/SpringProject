@@ -65,4 +65,24 @@ public class AdminController {
         List<ProjectManager> managers = service.viewManagers(); 
         return ResponseEntity.ok(managers);
     }
+    @DeleteMapping("/deleteuser")
+    public ResponseEntity<String> deleteUser(@RequestParam int uid) {
+        try {
+            String obj = service.deleteUser(uid);
+            return ResponseEntity.ok(obj);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to Delete User ... !!");
+        }
+    }
+    @DeleteMapping("/deletemanager")
+    public ResponseEntity<String> deleteManager(@RequestParam int mid) {
+        try {
+            String output = service.deleteManager(mid);
+            return ResponseEntity.ok(output);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to Delete Manager ... !!");
+        }
+    }
+
+
 }

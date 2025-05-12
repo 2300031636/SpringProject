@@ -15,89 +15,86 @@ public class AssignTask
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "task_id", nullable = false)
+    @JoinColumn(name = "task_id")
     private Task task;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
+   
     @Column(nullable = false)
-    private String taskdescription;
+    private String assignedDate;
 
     @Column(nullable = false)
     private String deadline;
+
+    @Column(nullable = false)
+    private String priority;
 
     @Column(nullable = false)
     private String status;
 
     @CreationTimestamp
     @Column(nullable = false)
-    private LocalDateTime assigntime;
+    private LocalDateTime assignedTime;
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public Task getTask() {
-		return task;
-	}
+    public Task getTask() {
+        return task;
+    }
 
-	public void setTask(Task task) {
-		this.task = task;
-	}
+    public void setTask(Task task) {
+        this.task = task;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public String getAssignedDate() {
+        return assignedDate;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setAssignedDate(String assignedDate) {
+        this.assignedDate = assignedDate;
+    }
 
-	public String getTaskdescription() {
-		return taskdescription;
-	}
+    public String getDeadline() {
+        return deadline;
+    }
 
-	public void setTaskdescription(String taskdescription) {
-		this.taskdescription = taskdescription;
-	}
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
 
-	public String getDeadline() {
-		return deadline;
-	}
+    public String getPriority() {
+        return priority;
+    }
 
-	public void setDeadline(String deadline) {
-		this.deadline = deadline;
-	}
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public LocalDateTime getAssigntime() {
-		return assigntime;
-	}
+    public LocalDateTime getAssignedTime() {
+        return assignedTime;
+    }
 
-	public void setAssigntime(LocalDateTime assigntime) {
-		this.assigntime = assigntime;
-	}
+    public void setAssignedTime(LocalDateTime assignedTime) {
+        this.assignedTime = assignedTime;
+    }
 
-	@Override
-	public String toString() {
-		return "AssignTask [id=" + id + ", task=" + task + ", user=" + user + ", taskdescription=" + taskdescription
-				+ ", deadline=" + deadline + ", status=" + status + ", assigntime=" + assigntime + "]";
-	}
-
-    
-
-   
+    @Override
+    public String toString() {
+        return "AssignTask [id=" + id + ", task=" + task + ", assignedDate=" + assignedDate
+                + ", deadline=" + deadline + ", priority=" + priority + ", status=" + status
+                + ", assignedTime=" + assignedTime + "]";
+    }
 }

@@ -3,76 +3,111 @@ package com.project.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.project.models.ProjectManager;
+import com.project.dto.TaskDTO;
 import com.project.models.Task;
-import com.project.models.AssignTask;
+import com.project.models.ProjectManager;
 import com.project.services.ManagerService;
 
 @RestController
 @RequestMapping("/manager")
 @CrossOrigin("*")
-public class ManagerController {
+public class ManagerController 
+{
+   @Autowired
+   private com.project.services.ManagerService service;
+       
+//   @PostMapping("/login")
+//   public ResponseEntity<?> checkManagerLogin(@RequestBody ProjectManager manager) 
+//   {
+//       try 
+//       {
+//           ProjectManager m = service.managerlogin(manager.getName(), manager.getPassword());
+//
+//           if (m != null) 
+//           {
+//               return ResponseEntity.ok(m); 
+//           } 
+//           else 
+//           {
+//               return ResponseEntity.status(401).body("Invalid Username or Password"); 
+//           }
+//       } 
+//       catch (Exception e) 
+//       {
+//           return ResponseEntity.status(500).body("Login failed: " + e.getMessage());
+//       }
+//   }
 
-    @Autowired
-    private ManagerService service;
+   @PostMapping("/login")
+   public ResponseEntity<?> login(@RequestBody ProjectManager request) {
+       try {
+           if (request.getEmail() == null || request.getPassword() == null) {
+               return ResponseEntity.badRequest().body("Email and password are required");
+           }
 
-    @GetMapping("/home")
-    public String home() {
-        return "Manager Home";
-    }
+           ProjectManager manager = service.managerlogin(request.getEmail().trim(), request.getPassword().trim());
 
+           if (manager != null) {
+               return ResponseEntity.ok(manager);
+           } else {
+               return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
+           }
+       } catch (Exception e) {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body("Login failed: " + e.getMessage());
+       }
+   }
+   @PostMapping("/addtask")
+   public ResponseEntity<String> addTask(@RequestBody TaskDTO dto) 
+   {
+       try 
+       {
+           ProjectManager manager = service.ManagerById(dto.manager_Id);
+
+           Task task = new Task();
+           
+           task.setTitle(dto.getTitle());
+           task.setDescription(dto.getDescription());
+           task.setDeadline(dto.getDeadline()); 
+           task.setStatus(dto.getStatus());
+           task.setManager(manager);
+
+           String output = service.createtask(task);
+           return ResponseEntity.ok(output); 
+       } 
+       catch (Exception e) 
+       { 
+           return ResponseEntity.status(500).body("Failed to Add Task: " + e.getMessage());
+       }
+   }
    
-    @PostMapping("/login")
-    public ResponseEntity<?> managerLogin(@RequestBody ProjectManager man) {
-        try {
-            ProjectManager m = service.managerlogin(man.getEmail(), man.getPassword());
+   @GetMapping("/viewtasksbymanager/{managerId}")
+   public ResponseEntity<List<Task>> viewTasksByManager(@PathVariable int managerId) 
+   {
+       List<Task> tasks = service.viewtasksbymanager(managerId);
+       return ResponseEntity.ok(tasks);
+   }
+//   @DeleteMapping("/manager/deletetask/{taskId}")
+//   public ResponseEntity<String> deleteTask(@PathVariable Long taskId) {
+//       ManagerRepo.deleteById(taskId);
+//       return ResponseEntity.ok("Task deleted successfully");
+//   }
 
-            if (m != null) {
-                return ResponseEntity.ok(m);
-            } else {
-                return ResponseEntity.status(401).body("Invalid Credentials");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Login Failed: " + e.getMessage());
-        }
-    }
-
-    
-    @PostMapping("/createtask")
-    public ResponseEntity<String> createTask(@RequestBody Task task) {
-        try {
-            String result = service.createtask(task);
-            return ResponseEntity.ok(result);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to create task: " + e.getMessage());
-        }
-    }
-
-  
-    @GetMapping("/viewtasksbymanager/{mid}")
-    public ResponseEntity<List<Task>> viewTasksByManager(@PathVariable int mid) {
-        List<Task> tasks = service.viewtasksbymanager(mid);
-        return ResponseEntity.ok(tasks);
-    }
-
-   
-    @GetMapping("/viewassignedtasks/{mid}")
-    public ResponseEntity<List<AssignTask>> viewAssignedTasks(@PathVariable int mid) {
-        List<AssignTask> assignedTasks = service.assigntasksbyManager(mid);
-        return ResponseEntity.ok(assignedTasks);
-    }
-
-    
-    @PutMapping("/updatetaskstatus")
-    public ResponseEntity<String> updateTaskStatus(@RequestParam int id, @RequestParam String status) {
-        try {
-            String result = service.updatetaskstatus(id, status);
-            return ResponseEntity.ok(result);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to update task status: " + e.getMessage());
-        }
-    }
+//   @GetMapping("/updatetaskstatus")
+//   public ResponseEntity<String> updateTaskStatus(@RequestParam int taskId, @RequestParam String status) 
+//   { 
+//       try
+////       {
+////           String output = managerService.updateTaskStatus(taskId, status);
+////           return ResponseEntity.ok(output);
+////       }
+////       catch (Exception e) 
+////       {
+////           return ResponseEntity.status(500).body("Error:" + e.getMessage());
+////       }
+//   }
 }

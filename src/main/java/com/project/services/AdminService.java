@@ -14,11 +14,11 @@ public interface AdminService {
 	
 	public List<ProjectManager> viewManagers();
 	
-    public String deleteManager(int managerId);
+    public String deleteManager(int Id);
     
 	public List<User> viewusers();
 
-	public String deleteUser(int userId);
+	public String deleteUser(int Id);
 
 
 	

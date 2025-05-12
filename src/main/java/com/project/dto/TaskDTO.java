@@ -10,18 +10,15 @@ import jakarta.persistence.Table;
 
 public class TaskDTO {
    
-	private int id;
-	private String title;
-	private String description;
-	private String duedate;
-	private String assignedto;
-	private String status;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+	
+	public String title;
+	public String description;
+	public String deadline;
+	
+	public String status;
+
+	public int manager_Id;
+	
 	public String getTitle() {
 		return title;
 	}
@@ -34,23 +31,27 @@ public class TaskDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getDuedate() {
-		return duedate;
-	}
-	public void setDuedate(String duedate) {
-		this.duedate = duedate;
-	}
-	public String getAssignedto() {
-		return assignedto;
-	}
-	public void setAssignedto(String assignedto) {
-		this.assignedto = assignedto;
-	}
+	
+	
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public int getManager_Id() {
+		return manager_Id;
+	}
+	public void setManager_Id(int manager_Id) {
+		this.manager_Id = manager_Id;
+	}
+	public String getDeadline() {
+		return deadline;
+	}
+	public void setDeadline(String deadline) {
+		this.deadline = deadline;
+	}
+	
+	
 	
 }
